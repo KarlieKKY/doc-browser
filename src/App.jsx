@@ -1,9 +1,10 @@
 import "./App.css";
+import FileAndFolder from "./components/FileAndFolder";
 
 function App() {
   return (
     <>
-      <h1>Hello World!</h1>
+      <FileAndFolder />
     </>
   );
 }
