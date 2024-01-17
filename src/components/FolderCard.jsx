@@ -1,14 +1,21 @@
-import { useState } from "react";
-import FileCard from "./FileCard";
+import { useContext } from "react";
+import { SortContext } from "./FileAndFolder";
 
 // Display folder
-const FolderCard = ({ folder, selectFolder }) => {
-  //   console.log(folder);
+const FolderCard = ({ folder }) => {
+  const { setData } = useContext(SortContext);
+
   return (
-    <div>
-      <h2 onClick={() => selectFolder(folder.files)}>Folder: {folder.name}</h2>
-      <h3>{folder.type}</h3>
-    </div>
+    <tr>
+      <td
+        onClick={() => setData(folder.files)}
+        style={{ backgroundColor: "gray" }}
+      >
+        {folder.name}
+      </td>
+      <td>{folder.added}</td>
+      <td>{folder.type}</td>
+    </tr>
   );
 };
 

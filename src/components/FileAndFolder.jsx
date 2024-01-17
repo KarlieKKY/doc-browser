@@ -1,45 +1,65 @@
-import { useState, useEffect } from "react";
+import { useState, createContext, useEffect } from "react";
+
+import { getAllData, getDataSortByKey } from "../../utils/utils";
 
 import FileCard from "./FileCard";
 import FolderCard from "./FolderCard";
+import SortFileAndFolder from "./SortFileAndFolder";
+
+export const SortContext = createContext();
 
 export default function FileAndFolder() {
-  const [filesAndFolders, setFilesAndFolders] = useState([]);
-  const [originalData, setOrginalData] = useState([]);
+  const [data, setData] = useState(getAllData());
+  const [sortBy, setSortBy] = useState("Name");
+  const [isAscending, setIsAscending] = useState(true);
 
   useEffect(() => {
-    import("../../dummyDB/data.json")
-      .then((data) => {
-        setFilesAndFolders(data.default);
-        setOrginalData(data.default);
-      })
-      .catch((error) => {
-        console.error("Error loading JSON data: ", error);
-      });
-  }, []);
+    const sortedData = getDataSortByKey(data, sortBy, isAscending);
+    setData(sortedData);
+    console.log(data);
+  }, [sortBy, isAscending]);
 
-  const selectFolder = (folderName) => {
-    setFilesAndFolders(folderName);
-  };
-  // console.log(filesAndFolders);
   return (
-    <div>
-      {filesAndFolders.length > 0 && filesAndFolders[0].type !== "folder" && (
-        <button onClick={() => setFilesAndFolders(originalData)}>
-          Back to main
-        </button>
-      )}
-      {filesAndFolders.map((item) =>
-        item.type === "folder" ? (
-          <FolderCard
-            key={item.name}
-            folder={item}
-            selectFolder={selectFolder}
-          />
-        ) : (
-          <FileCard key={item.name} file={item} />
-        )
-      )}
-    </div>
+    <SortContext.Provider
+      value={{
+        sortBy,
+        setSortBy,
+        isAscending,
+        setIsAscending,
+        data,
+        setData,
+      }}
+    >
+      <section>
+        {data.length > 0 && (
+          <button onClick={() => setData(getAllData())}>Back to main</button>
+        )}
+        <table>
+          <tbody>
+            <tr>
+              <th>
+                <SortFileAndFolder col_name="Name" />
+              </th>
+              <th>
+                <SortFileAndFolder col_name="Date" />
+              </th>
+              <th>
+                <SortFileAndFolder col_name="Type" />
+              </th>
+              <th>
+                <SortFileAndFolder col_name="Size" />
+              </th>
+            </tr>
+            {data.map((item) =>
+              item.type === "folder" ? (
+                <FolderCard key={item.name} folder={item} />
+              ) : (
+                <FileCard key={item.name} file={item} />
+              )
+            )}
+          </tbody>
+        </table>
+      </section>
+    </SortContext.Provider>
   );
 }
