@@ -3,13 +3,18 @@ import { SortContext } from "./FileAndFolder";
 
 // Display folder
 const FolderCard = ({ folder }) => {
-  const { setData } = useContext(SortContext);
+  const { dirList, setDirList } = useContext(SortContext);
+
+  const handleClick = (e, newDir) => {
+    e.preventDefault();
+    setDirList([...dirList, newDir]);
+  };
 
   return (
     <tr>
       <td
-        onClick={() => setData(folder.files)}
-        style={{ backgroundColor: "gray" }}
+        onClick={(e) => handleClick(e, folder.name)}
+        className="bg-slate-300 hover:bg-blue-500 text-blue-700 hover:text-white border border-blue-500 hover:border-transparent rounded"
       >
         {folder.name}
       </td>

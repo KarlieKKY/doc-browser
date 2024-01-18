@@ -1,10 +1,11 @@
 import "./App.css";
 import FileAndFolder from "./components/FileAndFolder";
+import { Header } from "./components/Header";
 
 function App() {
   return (
     <>
-      <h1>Welcome to my Docs!</h1>
+      <Header />
       <FileAndFolder />
     </>
   );

@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ["./src/**/*.{html,js}"],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     fontSize: {
       xxxxs: "0.6rem",
@@ -14,7 +14,11 @@ export default {
       "4xl": "2.441rem",
       "5xl": "3.052rem",
     },
-    extend: {},
+    extend: {
+      backgroundImage: {
+        header: "url('src/assets/header_img.jpg')",
+      },
+    },
   },
   plugins: [],
 };

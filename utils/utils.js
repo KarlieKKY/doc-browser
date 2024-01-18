@@ -28,3 +28,17 @@ export function getDataSortByKey(data, key, isAscending) {
     return isAscending ? isALarger : -isALarger;
   });
 }
+
+export function getCurrentData(data, dirList) {
+  if (dirList.length === 0) {
+    return data;
+  }
+  const targetData = data.find((item) => item.name === dirList[0]);
+  return getCurrentData(targetData.files, dirList.slice(1));
+}
+
+export function getFilteredData(data, filterTerm) {
+  return data.filter((item) =>
+    item.name.toLowerCase().includes(filterTerm.toLowerCase())
+  );
+}
